@@ -1,3 +1,5 @@
 # English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  field_users: Users
+  field_user_ids: Users
+  label_create_multiple_time_entries: Log time massively

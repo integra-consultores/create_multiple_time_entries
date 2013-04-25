@@ -1,0 +1,26 @@
+<%= error_messages_for 'bulk_time_entry' %>
+<%= back_url_hidden_field_tag %>
+
+<div class="box tabular">
+  <% if @bulk_time_entry.new_record? %>
+    <% if params[:project_id] || @bulk_time_entry.issue %>
+      <%= f.hidden_field :project_id %>
+    <% else %>
+      <p><%= f.select :project_id, project_tree_options_for_select(Project.allowed_to(:log_time).all, :selected => @bulk_time_entry.project), :required => true %></p>
+    <% end %>
+  <% end %>
+  <p><%= f.text_field :issue_id, :size => 6 %> <em><%= h("#{@bulk_time_entry.issue.tracker.name} ##{@bulk_time_entry.issue.id}: #{@bulk_time_entry.issue.subject}") if @bulk_time_entry.issue %></em></p>
+  <p><%= f.text_field :spent_on, :size => 10, :required => true %><%= calendar_for('bulk_time_entry_spent_on') %></p>
+  <p><%= f.text_field :hours, :size => 6, :required => true %></p>
+  <p><%= f.text_field :comments, :size => 100 %></p>
+  <p><%= f.select :activity_id, activity_collection_for_select_options(@bulk_time_entry), :required => true %></p>
+  <p>
+    <%= label_tag :users, l(:field_users) %>
+    <%= select_tag "bulk_time_entry[user_ids][]", bulk_time_entries_user_collection_for_select_options(@project, @bulk_time_entry.users) , :multiple => true %>
+  </p>
+  <% @bulk_time_entry.custom_field_values.each do |value| %>
+    <p><%= custom_field_tag_with_label :bulk_time_entry, value %></p>
+  <% end %>
+</div>
+
+<%= javascript_tag "observeAutocompleteField('bulk_time_entry_issue_id', '#{escape_javascript auto_complete_issues_path(:project_id => @project, :scope => (@project ? nil : 'all'))}')" %>
