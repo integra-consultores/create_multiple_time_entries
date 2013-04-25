@@ -2,3 +2,4 @@ es:
   field_users: Usuarios
   field_user_ids: Usuarios
   label_create_multiple_time_entries: Registrar tiempo masivamente
+  permission_create_multiples_time_entries: Registrar tiempo masivamente
